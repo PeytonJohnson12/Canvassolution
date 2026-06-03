@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-canvas text-ink antialiased;
+}
+
+/* Subtle ambient gradient for auth screens. */
+.auth-bg {
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgba(124, 58, 237, 0.10), transparent 60%),
+    radial-gradient(50rem 40rem at 110% 10%, rgba(124, 58, 237, 0.08), transparent 55%),
+    #FAFAF9;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium
+           transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-white hover:bg-accent-hover;
+  }
+  .btn-ghost {
+    @apply btn border border-gray-200 bg-white text-ink hover:bg-gray-50;
+  }
+  .field {
+    @apply w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-ink
+           placeholder:text-gray-400 outline-none transition
+           focus:border-accent focus:ring-4 focus:ring-accent-ring/40;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+  .card {
+    @apply rounded-xl border border-gray-100 bg-white shadow-card;
+  }
+}

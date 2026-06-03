@@ -1,0 +1,93 @@
+// StudyPlan local data model (PRD §8).
+// NOTE: password and Canvas token are stored in PLAINTEXT by design for this
+// single-user, localhost MVP (FR-1.6, FR-4.3). No hashing/encryption in scope.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  email              String   @unique
+  password           String
+  fullName           String
+  phone              String?
+  tosAcceptedAt      DateTime
+  defaultHoursPerDay Float    @default(3)
+  planningWindowDays Int      @default(7)
+  defaultEffortHours Float    @default(2)
+  createdAt          DateTime @default(now())
+
+  sessions      Session[]
+  credential    CanvasCredential?
+  courses       Course[]
+  assignments   Assignment[]
+  announcements Announcement[]
+}
+
+model Session {
+  token     String   @id
+  userId    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CanvasCredential {
+  id                   Int       @id @default(autoincrement())
+  userId               Int       @unique
+  host                 String
+  apiBase              String
+  token                String
+  accountName          String?
+  lastValidatedAt      DateTime?
+  lastValidationStatus String?
+  syncedAt             DateTime?
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  canvasId Int    @unique
+  name     String
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments   Assignment[]
+  announcements Announcement[]
+}
+
+model Assignment {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  canvasId       Int       @unique
+  courseId       Int
+  courseCanvasId Int
+  name           String
+  dueAt          DateTime?
+  pointsPossible Float?
+  htmlUrl        String?
+  updatedAt      DateTime  @updatedAt
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  canvasId       Int       @unique
+  courseId       Int
+  courseCanvasId Int
+  title          String
+  message        String?
+  postedAt       DateTime?
+  htmlUrl        String?
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

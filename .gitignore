@@ -1,0 +1,16 @@
+/node_modules
+/.next
+/out
+*.log
+.DS_Store
+
+# TypeScript / Next build artifacts (auto-generated)
+*.tsbuildinfo
+next-env.d.ts
+
+# Local database (single-user, local only)
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# Env holds the local SQLite path; safe to keep, but ignore by default
+.env
