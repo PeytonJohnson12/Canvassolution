@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 interface Initial {
   host: string;
@@ -10,12 +11,12 @@ interface Initial {
 }
 
 const STATUS_PILL: Record<string, { text: string; cls: string }> = {
-  valid: { text: "Connected", cls: "bg-emerald-100 text-emerald-700" },
-  invalid_token: { text: "Token rejected", cls: "bg-red-100 text-red-700" },
-  bad_domain: { text: "Bad domain", cls: "bg-red-100 text-red-700" },
-  unreachable: { text: "Unreachable", cls: "bg-amber-100 text-amber-800" },
-  insufficient_scope: { text: "Insufficient scope", cls: "bg-amber-100 text-amber-800" },
-  error: { text: "Error", cls: "bg-red-100 text-red-700" },
+  valid: { text: "Connected", cls: "badge-success" },
+  invalid_token: { text: "Token rejected", cls: "badge-destructive" },
+  bad_domain: { text: "Bad domain", cls: "badge-destructive" },
+  unreachable: { text: "Unreachable", cls: "badge-warning" },
+  insufficient_scope: { text: "Insufficient scope", cls: "badge-warning" },
+  error: { text: "Error", cls: "badge-destructive" },
 };
 
 export function ConnectionsForm({ initial }: { initial: Initial }) {
@@ -47,50 +48,66 @@ export function ConnectionsForm({ initial }: { initial: Initial }) {
   }
 
   const pill = status ? STATUS_PILL[status] : null;
+  const connected = status === "valid";
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Connections</h1>
-      <p className="mt-1 text-sm text-muted">Link the Canvas account StudyPlan reads your coursework from.</p>
+      <h1>Connections</h1>
+      <p className="mt-1">Link the Canvas account StudyPlan reads your coursework from.</p>
 
-      <div className="card mt-6 max-w-xl p-6">
+      <div className="card card-default mt-6 max-w-xl p-6">
         <div className="mb-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-ink">Canvas</span>
+          <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Canvas</span>
           {pill && (
-            <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${pill.cls}`}>
+            <span className={`badge ${pill.cls}`}>
               {pill.text}
-              {status === "valid" && accountName ? ` · ${accountName}` : ""}
+              {connected && accountName ? ` · ${accountName}` : ""}
             </span>
           )}
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="label" htmlFor="host">Canvas domain</label>
-            <input id="host" className="field" placeholder="school.instructure.com"
+            <label className="mb-2 block" htmlFor="host">Canvas domain</label>
+            <input id="host" className="input" placeholder="school.instructure.com"
               value={host} onChange={(e) => setHost(e.target.value)} required />
-            <p className="mt-1 text-xs text-muted">Just the host — we add https:// and /api/v1.</p>
+            <p className="hint">Just the host — we add https:// and /api/v1.</p>
           </div>
           <div>
-            <label className="label" htmlFor="token">Personal access token</label>
-            <input id="token" type="password" className="field"
+            <label className="mb-2 block" htmlFor="token">Personal access token</label>
+            <input id="token" type="password" className="input"
               placeholder={initial.hasToken ? "•••••••• (re-enter to update)" : "Paste your Canvas token"}
               value={token} onChange={(e) => setToken(e.target.value)} required />
-            <p className="mt-1 text-xs text-muted">
-              Canvas → Account → Settings → New Access Token. Stored locally in plaintext.
-            </p>
+            <p className="hint">Stored locally in plaintext on your machine.</p>
           </div>
-          <button type="submit" className="btn-primary" disabled={busy}>
-            {busy ? "Validating…" : "Save & validate"}
+
+          <details className="card card-bordered" style={{ padding: "var(--space-12) var(--space-16)" }}>
+            <summary style={{ cursor: "pointer", color: "var(--text-primary)", fontSize: "var(--text-sm)", fontWeight: 500 }}>
+              How do I get a token?
+            </summary>
+            <ol className="mt-2" style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", paddingLeft: "1.1rem", lineHeight: 1.7 }}>
+              <li>In Canvas, click <strong>Account → Settings</strong>.</li>
+              <li>Scroll to <strong>Approved Integrations</strong> → <strong>+ New Access Token</strong>.</li>
+              <li>Give it a purpose (e.g. "StudyPlan") and leave the expiry blank, then <strong>Generate Token</strong>.</li>
+              <li>Copy the token and paste it above. (Canvas only shows it once.)</li>
+            </ol>
+          </details>
+
+          <button type="submit" className="btn btn-md btn-primary" disabled={busy}>
+            {busy ? "Validating…" : connected ? "Update connection" : "Save & validate"}
           </button>
         </form>
 
         {message && (
-          <p className={`mt-4 rounded-lg px-3 py-2 text-sm ${
-            status === "valid" ? "bg-emerald-50 text-emerald-800" : "bg-red-50 text-red-700"
-          }`}>
-            {message}
-          </p>
+          <div className={`alert mt-4 ${connected ? "alert-success" : "alert-error"}`}>
+            <div>
+              {connected && accountName ? `Connected as ${accountName}. ` : ""}{message}
+            </div>
+          </div>
+        )}
+
+        {connected && (
+          <Link href="/" className="btn btn-md btn-primary mt-4">View your plan →</Link>
         )}
       </div>
     </div>

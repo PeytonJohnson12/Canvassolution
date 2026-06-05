@@ -21,7 +21,8 @@ export function LoginForm() {
     });
     setBusy(false);
     if (res.ok) {
-      router.push("/");
+      const body = await res.json().catch(() => ({}));
+      router.push(body.redirect ?? "/");
       router.refresh();
     } else {
       const body = await res.json().catch(() => ({}));
@@ -31,20 +32,18 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
-      )}
+      {error && <div className="alert alert-error">{error}</div>}
       <div>
-        <label className="label" htmlFor="email">Email</label>
-        <input id="email" type="email" className="field" value={email}
+        <label className="mb-2 block" htmlFor="email">Email</label>
+        <input id="email" type="email" className="input" value={email}
           onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
       </div>
       <div>
-        <label className="label" htmlFor="password">Password</label>
-        <input id="password" type="password" className="field" value={password}
+        <label className="mb-2 block" htmlFor="password">Password</label>
+        <input id="password" type="password" className="input" value={password}
           onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />
       </div>
-      <button type="submit" className="btn-primary w-full" disabled={busy}>
+      <button type="submit" className="btn btn-md btn-primary w-full" disabled={busy}>
         {busy ? "Signing in…" : "Log in"}
       </button>
     </form>

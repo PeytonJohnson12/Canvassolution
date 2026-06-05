@@ -16,7 +16,7 @@ export default async function LoginPage() {
           <h1 className="mt-5 text-2xl font-semibold tracking-tight">Welcome back</h1>
           <p className="mt-1 text-sm text-muted">Log in to see today&apos;s plan.</p>
         </div>
-        <div className="card p-6">
+        <div className="card card-default p-6">
           <LoginForm />
         </div>
         <p className="mt-6 text-center text-sm text-muted">

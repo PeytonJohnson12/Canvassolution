@@ -16,7 +16,7 @@ export default async function SignupPage() {
           <h1 className="mt-5 text-2xl font-semibold tracking-tight">Create your account</h1>
           <p className="mt-1 text-sm text-muted">Everything stays local on your machine.</p>
         </div>
-        <div className="card p-6">
+        <div className="card card-default p-6">
           <SignupForm />
         </div>
         <p className="mt-6 text-center text-sm text-muted">

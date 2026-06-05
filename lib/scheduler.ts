@@ -24,6 +24,7 @@ export interface DayBlock {
   hours: number;
   htmlUrl: string | null;
   dueAt: string; // ISO
+  pointsPossible: number | null;
 }
 
 export interface PlanDay {
@@ -176,6 +177,7 @@ export function generatePlan(
         hours: take,
         htmlUrl: a.htmlUrl,
         dueAt: a.dueAt!.toISOString(),
+        pointsPossible: a.pointsPossible,
       });
       planDays[d].allocated += take;
       remaining -= take;
@@ -203,6 +205,7 @@ export function generatePlan(
         hours: 0,
         htmlUrl: a.htmlUrl,
         dueAt: a.dueAt!.toISOString(),
+        pointsPossible: a.pointsPossible,
       });
       representedInWindow.add(a.canvasId);
     }

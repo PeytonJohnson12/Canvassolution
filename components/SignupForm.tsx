@@ -25,7 +25,7 @@ export function SignupForm() {
     });
     setBusy(false);
     if (res.ok) {
-      router.push("/");
+      router.push("/connections"); // step 1 for a brand-new account
       router.refresh();
     } else {
       const body = await res.json().catch(() => ({}));
@@ -36,37 +36,37 @@ export function SignupForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="label" htmlFor="fullName">Full name</label>
-        <input id="fullName" className="field" value={form.fullName}
+        <label className="mb-2 block" htmlFor="fullName">Full name</label>
+        <input id="fullName" className="input" value={form.fullName}
           onChange={(e) => set("fullName", e.target.value)} required />
-        {errors.fullName && <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>}
+        {errors.fullName && <p className="error-text">{errors.fullName}</p>}
       </div>
       <div>
-        <label className="label" htmlFor="email">Email</label>
-        <input id="email" type="email" className="field" value={form.email}
+        <label className="mb-2 block" htmlFor="email">Email</label>
+        <input id="email" type="email" className="input" value={form.email}
           onChange={(e) => set("email", e.target.value)} autoComplete="email" required />
-        {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+        {errors.email && <p className="error-text">{errors.email}</p>}
       </div>
       <div>
-        <label className="label" htmlFor="password">Password</label>
-        <input id="password" type="password" className="field" value={form.password}
+        <label className="mb-2 block" htmlFor="password">Password</label>
+        <input id="password" type="password" className="input" value={form.password}
           onChange={(e) => set("password", e.target.value)} autoComplete="new-password" required />
-        {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
+        {errors.password && <p className="error-text">{errors.password}</p>}
       </div>
       <div>
-        <label className="label" htmlFor="phone">Phone <span className="font-normal text-muted">(optional)</span></label>
-        <input id="phone" className="field" value={form.phone}
+        <label className="mb-2 block" htmlFor="phone">Phone <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(optional)</span></label>
+        <input id="phone" className="input" value={form.phone}
           onChange={(e) => set("phone", e.target.value)} autoComplete="tel" />
       </div>
 
-      <label className="flex items-start gap-2.5 text-sm text-ink">
+      <label className="flex items-start gap-2.5" style={{ fontWeight: 400, color: "var(--text-primary)" }}>
         <input type="checkbox" checked={tos} onChange={(e) => setTos(e.target.checked)}
-          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent-ring" />
+          className="mt-0.5 h-4 w-4" style={{ accentColor: "var(--accent)" }} />
         <span>I agree to the Terms of Service</span>
       </label>
-      {errors.tos && <p className="-mt-2 text-xs text-red-600">{errors.tos}</p>}
+      {errors.tos && <p className="error-text" style={{ marginTop: 0 }}>{errors.tos}</p>}
 
-      <button type="submit" className="btn-primary w-full" disabled={!tos || busy}>
+      <button type="submit" className="btn btn-md btn-primary w-full" disabled={!tos || busy}>
         {busy ? "Creating account…" : "Create account"}
       </button>
     </form>

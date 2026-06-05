@@ -47,10 +47,10 @@ export function SettingsForm({ initial }: { initial: Initial }) {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-      <p className="mt-1 text-sm text-muted">Defaults the planner uses when it builds your plan.</p>
+      <h1>Settings</h1>
+      <p className="mt-1">Defaults the planner uses when it builds your plan.</p>
 
-      <form onSubmit={onSubmit} className="card mt-6 max-w-xl space-y-5 p-6">
+      <form onSubmit={onSubmit} className="card card-default mt-6 max-w-xl space-y-5 p-6">
         <Field label="Default hours per day" hint="Used as the starting daily budget on the Plan view."
           value={form.defaultHoursPerDay} onChange={(v) => set("defaultHoursPerDay", v)}
           type="number" min="0.5" max="24" step="0.5" error={errors.defaultHoursPerDay} />
@@ -62,10 +62,10 @@ export function SettingsForm({ initial }: { initial: Initial }) {
           type="number" min="0.5" max="24" step="0.5" error={errors.defaultEffortHours} />
 
         <div className="flex items-center gap-3">
-          <button type="submit" className="btn-primary" disabled={busy}>
+          <button type="submit" className="btn btn-md btn-primary" disabled={busy}>
             {busy ? "Saving…" : "Save settings"}
           </button>
-          {saved && <span className="text-sm text-emerald-700">Saved.</span>}
+          {saved && <span className="text-sm" style={{ color: "var(--success)" }}>Saved.</span>}
         </div>
       </form>
     </div>
@@ -78,13 +78,13 @@ function Field(props: {
 }) {
   return (
     <div>
-      <label className="label">{props.label}</label>
+      <label className="mb-2 block">{props.label}</label>
       <input
-        className="field max-w-[12rem]" type={props.type} min={props.min} max={props.max} step={props.step}
+        className="input max-w-[12rem]" type={props.type} min={props.min} max={props.max} step={props.step}
         value={props.value} onChange={(e) => props.onChange(e.target.value)}
       />
-      {props.hint && <p className="mt-1 text-xs text-muted">{props.hint}</p>}
-      {props.error && <p className="mt-1 text-xs text-red-600">{props.error}</p>}
+      {props.hint && <p className="hint">{props.hint}</p>}
+      {props.error && <p className="error-text">{props.error}</p>}
     </div>
   );
 }

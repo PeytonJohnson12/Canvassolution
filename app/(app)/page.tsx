@@ -8,5 +8,5 @@ export const dynamic = "force-dynamic";
 export default async function PlanPage() {
   const user = await getCurrentUser();
   const payload = await loadPlan(user!.id); // layout guarantees auth
-  return <PlanView initial={payload} />;
+  return <PlanView initial={payload} userName={user!.fullName} />;
 }

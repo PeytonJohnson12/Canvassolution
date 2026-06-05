@@ -51,34 +51,34 @@ export function AccountForm({ initial }: { initial: Initial }) {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Account</h1>
-      <p className="mt-1 text-sm text-muted">Your local profile.</p>
+      <h1>Account</h1>
+      <p className="mt-1">Your local profile.</p>
 
-      <form onSubmit={onSubmit} className="card mt-6 max-w-xl space-y-4 p-6">
+      <form onSubmit={onSubmit} className="card card-default mt-6 max-w-xl space-y-4 p-6">
         <div>
-          <label className="label" htmlFor="fullName">Full name</label>
-          <input id="fullName" className="field" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} />
-          {errors.fullName && <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>}
+          <label className="mb-2 block" htmlFor="fullName">Full name</label>
+          <input id="fullName" className="input" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} />
+          {errors.fullName && <p className="error-text">{errors.fullName}</p>}
         </div>
         <div>
-          <label className="label" htmlFor="email">Email</label>
-          <input id="email" type="email" className="field" value={form.email} onChange={(e) => set("email", e.target.value)} />
-          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+          <label className="mb-2 block" htmlFor="email">Email</label>
+          <input id="email" type="email" className="input" value={form.email} onChange={(e) => set("email", e.target.value)} />
+          {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
         <div>
-          <label className="label" htmlFor="phone">Phone <span className="font-normal text-muted">(optional)</span></label>
-          <input id="phone" className="field" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+          <label className="mb-2 block" htmlFor="phone">Phone <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(optional)</span></label>
+          <input id="phone" className="input" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
         </div>
         <div>
-          <label className="label" htmlFor="password">New password <span className="font-normal text-muted">(leave blank to keep)</span></label>
-          <input id="password" type="password" className="field" value={form.password} onChange={(e) => set("password", e.target.value)} autoComplete="new-password" />
+          <label className="mb-2 block" htmlFor="password">New password <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(leave blank to keep)</span></label>
+          <input id="password" type="password" className="input" value={form.password} onChange={(e) => set("password", e.target.value)} autoComplete="new-password" />
         </div>
 
         <div className="flex items-center gap-3">
-          <button type="submit" className="btn-primary" disabled={busy}>
+          <button type="submit" className="btn btn-md btn-primary" disabled={busy}>
             {busy ? "Saving…" : "Save changes"}
           </button>
-          {saved && <span className="text-sm text-emerald-700">Saved.</span>}
+          {saved && <span className="text-sm" style={{ color: "var(--success)" }}>Saved.</span>}
         </div>
       </form>
     </div>

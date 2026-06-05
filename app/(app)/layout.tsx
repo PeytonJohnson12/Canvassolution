@@ -8,11 +8,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!user) redirect("/login");
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar userName={user.fullName} userEmail={user.email} />
-      <main className="flex-1 px-6 py-8 lg:px-10 lg:py-10">
-        <div className="mx-auto max-w-4xl">{children}</div>
-      </main>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--background)" }}>
+      <div className="layout-sidebar container" style={{ paddingBlock: "var(--space-24)" }}>
+        <Sidebar userName={user.fullName} userEmail={user.email} />
+        <main className="min-w-0">{children}</main>
+      </div>
     </div>
   );
 }
