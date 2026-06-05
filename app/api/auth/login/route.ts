@@ -13,5 +13,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
   }
   await createSession(user.id);
-  return NextResponse.json({ ok: true });
+  // Admins → Kanban; students with no Canvas connection → Connections (first step); else → plan.
+  let redirect = "/";
+  if (user.isAdmin) {
+    redirect = "/admin";
+  } else {
+    const cred = await prisma.canvasCredential.findUnique({ where: { userId: user.id } });
+    if (!cred) redirect = "/connections";
+  }
+  return NextResponse.json({ ok: true, redirect });
 }

@@ -38,3 +38,9 @@ export async function getCurrentUser() {
 export async function requireUser() {
   return getCurrentUser();
 }
+
+/** Returns the user only if they are an admin, else null. */
+export async function requireAdmin() {
+  const user = await getCurrentUser();
+  return user?.isAdmin ? user : null;
+}

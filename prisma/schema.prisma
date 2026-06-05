@@ -21,6 +21,7 @@ model User {
   defaultHoursPerDay Float    @default(3)
   planningWindowDays Int      @default(7)
   defaultEffortHours Float    @default(2)
+  isAdmin            Boolean  @default(false)
   createdAt          DateTime @default(now())
 
   sessions      Session[]
@@ -75,6 +76,17 @@ model Assignment {
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Shared admin Kanban board (not tied to a student/Canvas).
+model KanbanCard {
+  id          Int      @id @default(autoincrement())
+  columnKey   String   @default("todo") // "todo" | "doing" | "done"
+  title       String
+  description String?
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Announcement {
