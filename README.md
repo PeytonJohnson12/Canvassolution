@@ -9,6 +9,19 @@ the planning window. Every in-window due assignment appears as scheduled work,
 an `AT_RISK` flag, or both — enforced by construction *and* a runtime assertion
 in the scheduler.
 
+## User stories
+
+What the student should be able to do. Status: ✅ built · 🟡 partial · ⬜ planned.
+
+1. **See & optimize their schedule** — *"I can see my schedule and have it optimized for me."*
+   ✅ The Plan view shows a per-day plan; the scheduler packs work earliest-deadline-first within the daily hour budget.
+2. **See high-priority assignments & important tasks** — *"I can see which assignments matter most."*
+   🟡 The planner orders by due date then points, and `AT_RISK` surfaces what's slipping — but there's no dedicated "top priorities" highlight/sort yet.
+3. **See completed vs. upcoming assignments** — *"I can see what I've finished and what's coming up."*
+   ⬜ Upcoming work is shown; there is **no completion tracking** yet (Canvas submission status isn't pulled and there's no "mark done"). Needs a completed/upcoming view.
+4. **Get insights & a recommended day plan** — *"I can see which assignments to do and how to schedule my day."*
+   🟡 The daily plan already answers "how to schedule my day," and `AT_RISK` is an early insight — but an explicit recommendations/insights panel ("focus on X today," workload warnings) isn't built yet.
+
 ## Stack
 
 - **Next.js 15** (App Router, React 19, TypeScript) — UI + API routes in one process
@@ -107,6 +120,17 @@ The SQLite DB lives at `prisma/dev.db`. To wipe all local data:
 ```bash
 rm prisma/dev.db && npm run db:push
 ```
+
+## Admin board (Kanban)
+
+A shared admin Kanban board lives at `/admin`, gated behind an admin login.
+
+**Set it up:**
+1. In `.env`, set `ADMIN_EMAIL` and `ADMIN_PASSWORD` to your own values.
+2. Run `npm run seed:admin` to create/update the admin account (`isAdmin = true`).
+3. Log in at `/login` with those credentials — admins are auto-redirected to `/admin`; everyone else is bounced.
+
+The board has three columns (To Do · In Progress · Done). Add a card via the input in each column, move cards by **drag-and-drop** or the **← →** arrows, and delete with **✕**. Cards persist in the local DB (`KanbanCard` table) and are shared by everyone who logs in as admin on that install. Teammates on a fresh clone run `npm run db:push` then `npm run seed:admin`.
 
 ## Out of scope (MVP)
 
